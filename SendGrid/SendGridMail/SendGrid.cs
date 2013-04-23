@@ -38,6 +38,16 @@ namespace SendGridMail
         }
 
         /// <summary>
+        /// Creates an instance of SendGrid's custom message object
+        /// </summary>
+        /// <returns></returns>
+        public static SendGrid GetInstance(MailMessage message)
+        {
+            var header = new Header();
+            return new SendGrid(header, message);
+        }
+
+        /// <summary>
         /// Creates an instance of SendGrid's custom message object with mail parameters
         /// </summary>
         /// <param name="from">The email address of the sender</param>
@@ -75,6 +85,11 @@ namespace SendGridMail
             message = new MailMessage();
             Header = header;
             Headers = new Dictionary<string, string>();
+        }
+
+        internal SendGrid(IHeader header, MailMessage message) : this(header)
+        {
+            this.message = message;
         }
 
         private static Dictionary<string, string> InitializeFilters()
